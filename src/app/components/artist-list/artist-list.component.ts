@@ -29,12 +29,8 @@ export class ArtistListComponent implements OnInit {
 
   constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _tokenService: TokenService, private _artistService: ArtistService) { }
 
-  async ngOnInit() {
-    try {
-      await this.loadPage();
-    } catch (error: any){
-      this.errorText = error.error.message ? error.error.message : 'Ocurrio un error, vuelva a intentarlo';
-    }
+  ngOnInit() : void {
+    this.loadPage();
     this.currentUser = this._tokenService.getUser();
   }
 

@@ -27,7 +27,7 @@ export class ArtistEditComponent implements OnInit {
 
   constructor(private _activatedRoute: ActivatedRoute, private _location: Location, private _artistService: ArtistService, private _fileUploadService: FileUploadService) { }
 
-  async ngOnInit() {
+  ngOnInit() : void {
     this.loadArtist();
   }
 
