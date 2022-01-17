@@ -1,0 +1,29 @@
+<div class="d-flex flex-column justify-content-center align-items-center w-100 h-100 bg-light">
+  
+    <form class="w-50 p-3 shadow rounded-3 bg-white" #updateUserForm="ngForm" (submit)="updateUserForm.valid && onSubmit()">
+        <h1>Mis datos</h1>
+        
+        <label class="form-label mt-3" for="updateName">Nombre: </label>
+        <input class="form-control" type="text" name="updateName" id="updateName" #updateName="ngModel" [(ngModel)] = "userModified.name" (change)="checkChange()" required>
+        
+        <label class="form-label mt-3" for="updateSurname">Apellido: </label>
+        <input class="form-control" type="text" name="updateSurname" id="updateSurname" #updateSurname="ngModel" [(ngModel)] = "userModified.surname" (change)="checkChange()" required>
+        
+        <label class="form-label mt-3" for="updateEmail">Correo electrónico: </label>
+        <input class="form-control" type="text" name="updateEmail" id="updateEmail" #updateEmail="ngModel" [(ngModel)] = "userModified.email" (change)="checkChange()" required>
+       
+        <label class="form-label mt-3" for="updateImage">Imagen: </label>
+        <div class="d-flex flex-column justify-content-center align-items-center my-3 w-100" *ngIf="imageSrc">
+            <img [src]="imageSrc" alt="Imagen de perfil actual" class="w-25 mx-auto">
+            <button class="btn btn-danger mt-3" (click)="cancelImage()">Cancelar</button>
+        </div>
+        <input class="form-control" type="file" name="updateImage" id="updateImage" (change)="onFileChanged($event)" [(ngModel)] = "fakeFilePath">
+        
+        <button type="submit" [class.disabled] = "!(dataChanged || fileToUpload)" class="btn btn-success mt-3 w-100">Actualizar</button>
+    </form> 
+    <div *ngIf="updateError" class="alert alert-danger w-75 mt-3" role="alert">
+        {{ updateError }}
+      </div>
+</div>
+
+

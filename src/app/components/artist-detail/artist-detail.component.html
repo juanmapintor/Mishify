@@ -1,0 +1,42 @@
+<div class="d-flex flex-column p-3 w-25 h-100 overflow-hidden text-light"
+[style]="'background-image:' + 
+            (isAdmin() ? 
+            ' linear-gradient(0deg, rgba(0,0,0,0.8) 5%, rgba(255,255,255,0) 35%, rgba(0,0,0,0.8) 100%)' : 
+            ' linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 90%)')
+            +', url('+ getImageURL() + ');' + 
+         'background-size: cover;'+
+         'background-position: center;'">
+    <h1>{{ artist.name }}</h1>
+    <span>{{ artist.description }}</span>
+    <button class="btn btn-outline-primary mt-2" *ngIf="isAdmin()" [routerLink]="['/editar-artista', artist._id]">
+        <i class="bi bi-pencil fst-normal">  Editar</i>
+    </button>
+    <div class="d-flex flex-column justify-content-end mt-auto h-25" *ngIf="isAdmin()">
+        <button class="btn btn-outline-danger mb-2" (click)="delete()" *ngIf="!isDeleting">
+            <i class="bi bi-x-circle fst-normal">  Eliminar</i>
+        </button>
+        <div class="d-flex flex-column justify-content-end align-items-center h-100 w-100" *ngIf="isDeleting">
+            <span>¿Estas seguro?</span>
+            <div>
+                <button class="btn btn-link text-decoration-none text-success" (click)="deleteArtist()">
+                    <i class="bi bi-check-circle fs-1"></i>
+                </button>
+                <button class="btn btn-link text-decoration-none text-danger" (click)="cancelDelete()">
+                    <i class="bi bi-x-circle fs-1"></i>
+                </button>  
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="w-75 h-100 p-4 bg-light">
+    <div class="d-flex flex-column h-100 w-100 p-3 rounded-3 shadow bg-white">
+        <h1>Albums</h1>
+        <div class="flex-grow-1">
+            Aca van los albumes cuando los tengamos
+        </div>
+        <button class="btn btn-outline-success w-100 align-self-center" *ngIf="isAdmin()" [routerLink]="['/crear-album', artist._id]">
+            <i class="bi bi-plus-circle w-100 h-100">  Añadir album</i>
+        </button>
+    </div>
+</div>

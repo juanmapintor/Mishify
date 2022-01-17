@@ -1,0 +1,30 @@
+<div class="d-flex flex-column justify-content-center align-items-center w-100 h-100 bg-light">
+  
+    <form class="w-50 p-3 shadow rounded-3 bg-white" #updateArtistForm="ngForm" (submit)="updateArtistForm.valid && onSubmit()">
+        <h1>Editar artista</h1>
+        
+        <label class="form-label mt-3" for="artistName">Nombre: </label>
+        <input class="form-control" type="text" name="artistName" id="artistName" #artistName="ngModel" [(ngModel)] = "updateArtist.name" required>
+        <span class="w-100 text-danger fs-6" *ngIf="!artistName.valid">Ingrese el nombre del artista</span>
+        <br>
+
+        <label class="form-label mt-3" for="artistDescription">Descripción: </label>
+        <input class="form-control" type="text" name="artistDescription" id="artistDescription" #artistDescription="ngModel" [(ngModel)] = "updateArtist.description" required>
+        <span class="w-100 text-danger fs-6" *ngIf="!artistDescription.valid">Ingrese una descripción del artista</span>
+        <br>
+        
+        <label class="form-label mt-3" for="artistImage">Imagen: </label>
+        <div class="d-flex flex-column justify-content-center align-items-center my-3 w-100" *ngIf="imageSrc">
+            <img [src]="imageSrc" alt="Imagen de perfil actual" class="w-25 mx-auto">
+            <button class="btn btn-danger mt-3" (click)="cancelImage()">Cancelar</button>
+        </div>
+        <input #artistImage="ngModel" class="form-control" type="file" name="artistImage" id="artistImage" (change)="onFileChanged($event)" [(ngModel)] = "fakeFilePath">
+        <span class="w-100 text-danger fs-6" *ngIf="!artistImage.valid">Seleccione una imagen</span>
+        <br>
+        
+        <button type="submit" [class.disabled]="!updateArtistForm.valid || !dataChanged()" class="btn btn-primary mt-3 w-100">Guardar</button>
+    </form> 
+    <div *ngIf="errorText" class="alert alert-danger w-75 mt-3" role="alert">
+        {{ errorText }}
+      </div>
+</div>
