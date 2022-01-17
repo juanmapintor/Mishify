@@ -20,7 +20,7 @@ export class ArtistListComponent implements OnInit {
   currentPage = 1;
   nextPage = 1;
   prevPage = 1;
-  itemsPerPage = 3;
+  itemsPerPage = 4;
   isDeleting : Array<boolean> = [];
   artistToList: Array<Artist> = [];
   currentUser : User = new User();
@@ -49,9 +49,9 @@ export class ArtistListComponent implements OnInit {
     }
 
     try{
-      let artists : any = await this._artistService.listArtists(this.currentPage);
+      let artists : any = await this._artistService.listArtists(this.currentPage, this.itemsPerPage);
       let totalPages = Math.ceil(+(artists.total_items / artists.items_per_page));
-      this.itemsPerPage = artists.items_per_page;
+      this.itemsPerPage = +artists.items_per_page;
       if(totalPages == 0) this.nextPage = 1;
       if(this.currentPage == totalPages){
         this.nextPage = totalPages;

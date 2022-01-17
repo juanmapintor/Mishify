@@ -18,7 +18,7 @@
             <img [src]="imageSrc" alt="Imagen de perfil actual" class="w-25 mx-auto">
             <button class="btn btn-danger mt-3" (click)="cancelImage()">Cancelar</button>
         </div>
-        <input #artistImage="ngModel" class="form-control" type="file" name="artistImage" id="artistImage" (change)="onFileChanged($event)" [(ngModel)] = "fakeFilePath" required>
+        <input #artistImage="ngModel" class="form-control" type="file" accept="image/png,image/jpg,image/gif" name="artistImage" id="artistImage" (change)="onFileChanged($event)" [(ngModel)] = "fakeFilePath" required>
         <span class="w-100 text-danger fs-6" *ngIf="!artistImage.valid">Seleccione una imagen</span>
         <br>
         
@@ -26,5 +26,5 @@
     </form> 
     <div *ngIf="updateError" class="alert alert-danger w-75 mt-3" role="alert">
         {{ updateError }}
-      </div>
+    </div>
 </div>

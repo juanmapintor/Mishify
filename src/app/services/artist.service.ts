@@ -12,9 +12,10 @@ export class ArtistService {
 
   constructor(private _http: HttpClient) { }
 
-  public listArtists(page: number){
+  public listArtists(page: number, itemsPerPage : number ){
+    let url = `artists?page=${page}&items_per_page=${itemsPerPage}`;
     return firstValueFrom(
-      this._http.get(GLOBAL.API_URL + 'artists/' + page)
+      this._http.get(GLOBAL.API_URL + url)
     );
   }
 

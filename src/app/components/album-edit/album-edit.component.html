@@ -1,0 +1,56 @@
+<div class="d-flex flex-column p-3 w-25 h-100 overflow-hidden text-light" *ngIf="originalAlbum.image"
+[style]="'background-image: linear-gradient(0deg, rgba(0,0,0,0.8) 5%, rgba(255,255,255,0) 35%, rgba(0,0,0,0.8) 90%)'
+            +', url('+ getAlbumImageURL() + ');' + 
+         'background-size: cover;'+
+         'background-position: center;'">
+    <button class="btn btn-link text-decoration-none text-light text-start m-0 p-0" (click)="back()">
+        <h1>
+            <i class="bi bi-chevron-double-left m-0 p-0"></i>
+        </h1>
+    </button>
+    <h1>Album:</h1>
+    <h2>{{ originalAlbum.title }}</h2>
+    <span>{{ originalAlbum.description }}</span>
+    <span class="mt-3 fs-6">{{ originalAlbum.year }}</span>
+
+    <div class="mx-o mt-auto">
+        <h1>Artista:</h1>
+        <h2>{{ artist.name }}</h2>
+        <span>{{ artist.description }}</span>
+    </div>
+</div>
+
+<div class="w-75 h-100 p-4 bg-light">
+    <form class="d-flex flex-column h-100 w-100 p-3 rounded-3 shadow bg-white" #updateAlbumForm="ngForm" (submit)="updateAlbumForm.valid && onSubmit()">
+        <h1>Editar album '{{ originalAlbum.title }}' de: {{ artist.name }}</h1>            
+            <label class="form-label mt-3" for="albumTitle">Titulo: </label>
+            <input class="form-control" type="text" name="albumTitle" id="albumTitle" #albumTitle="ngModel" [(ngModel)] = "updateAlbum.title" required>
+            <span class="w-100 text-danger fs-6" *ngIf="!albumTitle.valid">Ingrese el titulo del album</span>
+            <br>
+    
+            <label class="form-label mt-3" for="artistDescription">Descripción: </label>
+            <input class="form-control" type="text" name="artistDescription" id="artistDescription" #artistDescription="ngModel" [(ngModel)] = "updateAlbum.description" required>
+            <span class="w-100 text-danger fs-6" *ngIf="!artistDescription.valid">Ingrese una descripción del album</span>
+            <br>
+
+            <label class="form-label mt-3" for="albumYear">Año: </label>
+            <input class="form-control" type="number" [min]="0" [max]="maxYear" name="albumYear" id="albumYear" #albumYear="ngModel" [(ngModel)]="updateAlbum.year" required>
+            <span class="w-100 text-danger fs-6" *ngIf="!albumYear.valid">Ingrese el año del album</span>
+            <br>
+            
+            <label class="form-label mt-3" for="albumImage">Imagen: </label>
+            <input #albumImage="ngModel" class="form-control" type="file" accept="image/*" name="albumImage" id="albumImage" (change)="onFileChanged($event)" [(ngModel)] = "fakeFilePath">
+            <span class="w-100 text-danger fs-6" *ngIf="!albumImage.valid">Seleccione una imagen</span>
+            <br>
+            <div class="d-flex flex-column justify-content-center align-items-center my-3 w-100" *ngIf="imageSrc">
+                <img [src]="imageSrc" alt="Imagen de perfil actual" class="w-auto mx-auto" style="max-height: 150px;">
+                <button class="btn btn-danger mt-3" (click)="cancelImage()">Cancelar</button>
+            </div>
+
+            <button type="submit" [class.disabled]="!updateAlbumForm.valid || !dataChanged()" class="btn btn-primary mt-auto w-100">Actualizar</button>
+
+        <div *ngIf="errorText" class="alert alert-danger w-100 mt-3" role="alert">
+            {{ errorText }}
+        </div>
+    </form>
+</div>
