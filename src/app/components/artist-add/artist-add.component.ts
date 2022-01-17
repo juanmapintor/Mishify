@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { Artist } from 'src/app/models/artist';
 import { ArtistService } from 'src/app/services/artist.service';
 import { FileUploadService } from 'src/app/services/file-upload.service';
@@ -7,11 +7,11 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
   selector: 'app-artist-add',
   templateUrl: './artist-add.component.html',
   styleUrls: ['./artist-add.component.css'],
-  host:{
-    class: 'h-100 w-100'
-  }
+  providers: [ArtistService, FileUploadService]
 })
-export class ArtistAddComponent implements OnInit {
+export class ArtistAddComponent {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
+
   newArtist = new Artist();
   public imageSrc = '';
   public fileToUpload : any = null;
@@ -19,9 +19,6 @@ export class ArtistAddComponent implements OnInit {
   public updateError = '';
 
   constructor(private _artistService: ArtistService, private _fileUploadService: FileUploadService) { }
-
-  ngOnInit(): void {
-  }
 
   onFileChanged(event: any){
     let fileReader = new FileReader();

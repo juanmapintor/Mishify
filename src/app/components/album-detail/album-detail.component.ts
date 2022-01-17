@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Location } from '@angular/common';
@@ -15,12 +15,10 @@ import { Artist } from 'src/app/models/artist';
 @Component({
   selector: 'app-album-detail',
   templateUrl: './album-detail.component.html',
-  styleUrls: ['./album-detail.component.css'],
-  host: {
-    class:'d-flex h-100 w-100'
-  }
+  styleUrls: ['./album-detail.component.css']
 })
 export class AlbumDetailComponent implements OnInit {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
   album: Album = new Album();
   artist = new Artist();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
@@ -8,14 +8,13 @@ import { FileUploadService } from 'src/app/services/file-upload.service';
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.css'],
-  host: {
-    class: 'h-100 w-100'
-  }
+  providers: [UserService, TokenService, FileUploadService]
 })
 export class UserEditComponent implements OnInit {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
 
-  public userModified: User;
-  public userOriginal: User;
+  public userModified: User = new User();
+  public userOriginal: User = new User();
   public imageSrc = '';
   public fileToUpload : any = null;
   public dataChanged = false;
@@ -25,12 +24,11 @@ export class UserEditComponent implements OnInit {
   public updateError = '';
 
 
-  constructor(private userService: UserService, private fileUploadService: FileUploadService, private tokenService: TokenService) {
-    this.userModified = tokenService.getUser();
-    this.userOriginal = tokenService.getUser();
-  }
+  constructor(private userService: UserService, private fileUploadService: FileUploadService, private tokenService: TokenService) {  }
 
   ngOnInit(): void {
+    this.userModified = this.tokenService.getUser();
+    this.userOriginal = this.tokenService.getUser();
   }
 
   public async onSubmit() {

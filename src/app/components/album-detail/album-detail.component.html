@@ -93,7 +93,7 @@
         <div *ngIf="errorText" class="alert alert-danger w-100 mt-3" role="alert">
             {{ errorText }}
         </div>
-        <button class="btn btn-outline-success w-100 align-self-center" *ngIf="isAdmin()" [routerLink]="['/crear-cancion', artist._id]">
+        <button class="btn btn-outline-success w-100 align-self-center" *ngIf="isAdmin()" [routerLink]="['/crear-cancion', album._id]">
             <i class="bi bi-plus-circle w-100 h-100">  Añadir canción</i>
         </button>
     </div>

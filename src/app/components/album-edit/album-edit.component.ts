@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Album } from 'src/app/models/album';
@@ -12,11 +12,11 @@ import { Artist } from 'src/app/models/artist';
   selector: 'app-album-edit',
   templateUrl: './album-edit.component.html',
   styleUrls: ['./album-edit.component.css'],
-  host: {
-    class: 'd-flex h-100 w-100'
-  }
+  providers: [AlbumService, FileUploadService]
 })
 export class AlbumEditComponent implements OnInit {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
+
   public updateAlbum = new Album();
   public originalAlbum = new Album();
   public artist = new Artist();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Artist } from 'src/app/models/artist';
@@ -12,11 +12,10 @@ import { GLOBAL } from 'src/app/services/global';
   selector: 'app-artist-list',
   templateUrl: './artist-list.component.html',
   styleUrls: ['./artist-list.component.css'],
-  host:{
-    class: 'h-100 w-100'
-  }
+  providers: [ArtistService, TokenService]
 })
 export class ArtistListComponent implements OnInit {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
   currentPage = 1;
   nextPage = 1;
   prevPage = 1;

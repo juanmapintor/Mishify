@@ -41,7 +41,7 @@
         <h1>Albums</h1>
         <div class="flex-grow-1">
             <div class="d-flex w-100 h-100">
-                <button class="btn h-100 flex-grow-0" [class.hidden]="albumsToList.length == 0 || currentPage == prevPage" (click)="goToPage(prevPage)">
+                <button class="btn h-100 flex-grow-0" [class.hidden]="albumsToList.length === 0 || currentPage === prevPage" (click)="goToPage(prevPage)">
                     <i class="bi bi-chevron-double-left"></i>
                 </button>
                 <div class="d-flex flex-column w-100 h-100">
@@ -88,7 +88,7 @@
                         <h1>No hay nada más que mostrar</h1>
                     </div>
                 </div>
-                <button class="btn h-100 flex-grow-0"  [class.hidden]="albumsToList.length == 0 || currentPage == nextPage" (click)="goToPage(nextPage)">
+                <button class="btn h-100 flex-grow-0"  [class.hidden]="albumsToList.length === 0 || currentPage === nextPage" (click)="goToPage(nextPage)">
                     <i class="bi bi-chevron-double-right"></i>
                 </button>
             </div>

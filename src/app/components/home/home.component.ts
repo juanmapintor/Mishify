@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  host:{
-    class: 'h-100 w-100'
-  }
+  styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
+
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Artist } from 'src/app/models/artist';
@@ -11,11 +11,11 @@ import { GLOBAL } from 'src/app/services/global';
   selector: 'app-artist-edit',
   templateUrl: './artist-edit.component.html',
   styleUrls: ['./artist-edit.component.css'],
-  host: {
-    class: 'd-flex h-100 w-100'
-  }
+  providers: [ArtistService, FileUploadService]
 })
 export class ArtistEditComponent implements OnInit {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
+
   public updateArtist = new Artist();
   public originalArtist = new Artist();
   public imageSrc = '';

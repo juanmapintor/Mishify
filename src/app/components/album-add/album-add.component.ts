@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Album } from 'src/app/models/album';
@@ -13,11 +13,11 @@ import { Location } from '@angular/common';
   selector: 'app-album-add',
   templateUrl: './album-add.component.html',
   styleUrls: ['./album-add.component.css'],
-  host: {
-    class: "d-flex h-100 w-100"
-  }
+  providers: [AlbumService, ArtistService, FileUploadService]
 })
 export class AlbumAddComponent implements OnInit {
+  @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
+
   artist: Artist = new Artist();
   errorText = '';
   newAlbum : Album = new Album();
