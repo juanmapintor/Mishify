@@ -32,17 +32,14 @@ export class SongAddComponent implements OnInit {
   async loadAlbum(){
     let params : any = await firstValueFrom(this._activatedRoute.params);
     if(params.albumId){
+      let albumId = params.albumId;
       try {
-        let getAlbum : any = await this._albumService.getAlbum(params.albumId);
+        let getAlbum : any = await this._albumService.getAlbum(albumId);
         if(getAlbum){
           let album = getAlbum.album;
           this.album = new Album(album._id, album.title, album.description, album.year, album.image, album.artist._id);
           this.newSong.album = album._id;
           this.artist = new Artist(album.artist._id, album.artist.name, album.artist.description, album.artist.image);
-
-          console.log('Artist: ', this.artist);
-          console.log('Album: ', this.album);
-          console.log('New Song:', this.newSong);
         } else {
           this.errorText = 'No se obtuvo el album para agregar la cancion';
         }
@@ -60,4 +57,7 @@ export class SongAddComponent implements OnInit {
     return GLOBAL.API_URL + 'get-image-artist/' + this.artist.image;
   }
 
+  back(){
+    this._location.back();
+  }
 }
