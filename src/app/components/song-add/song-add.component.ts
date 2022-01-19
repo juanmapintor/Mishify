@@ -8,6 +8,7 @@ import { AlbumService } from 'src/app/services/album.service';
 import { GLOBAL } from 'src/app/services/global';
 import { SongService } from 'src/app/services/song.service';
 import { Location } from '@angular/common';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 
 @Component({
   selector: 'app-song-add',
@@ -20,10 +21,15 @@ export class SongAddComponent implements OnInit {
 
   album : Album = new Album();
   artist : Artist = new Artist();
-  newSong: Song = new Song(); 
+  newSong: Song = new Song();
+
+  public file = '';
+  public fileToUpload : any = null;
+  public fakeFilePath = '';
+  public durationString = '';
 
   errorText = '';
-  constructor(private _activatedRoute: ActivatedRoute, private _location: Location, private _albumService: AlbumService, private _songservice: SongService) { }
+  constructor(private _activatedRoute: ActivatedRoute, private _location: Location, private _fileUploadService: FileUploadService, private _albumService: AlbumService, private _songService: SongService) { }
 
   ngOnInit(): void {
     this.loadAlbum();
@@ -57,7 +63,50 @@ export class SongAddComponent implements OnInit {
     return GLOBAL.API_URL + 'get-image-artist/' + this.artist.image;
   }
 
+  onFileChanged(event: any){
+    if(event.target.files.length > 0){
+      this.fileToUpload = event.target.files[0];
+      this.file = this.fileToUpload.name;
+
+      //Leemos la duracion directamente desde el archivo
+      new Audio(URL.createObjectURL(this.fileToUpload)).onloadedmetadata = (event : any) =>{
+        this.newSong.duration = Math.ceil(+event.currentTarget.duration);
+        this.durationString = this.getDurationString(this.newSong.duration);
+      }
+    }
+  }
+
+  cancelFile(){
+    this.file = '';
+    this.fakeFilePath = '';
+    this.fileToUpload = null;
+  }
+
   back(){
     this._location.back();
+  }
+
+  async onSubmit() {
+    try {
+      let uploadedSong : any = await this._songService.saveSong(this.newSong);
+      if(uploadedSong){
+        let uplodadedFile : any = await this._fileUploadService.uploadFile(`upload-file-song/${uploadedSong.song._id}`, this.fileToUpload);
+        if(uplodadedFile){
+          this.newSong._id = uplodadedFile.song._id;
+          this.newSong.number = uplodadedFile.song.number;
+        } else {
+          this.errorText = 'No se pudo subir el archivo de la canción.'
+        }
+      } else {
+        this.errorText = 'No se pudo subir la canción.'
+      }
+
+    } catch(error: any) {
+      this.errorText = error.error.message || 'Ocurrio un error'; 
+    }
+  }
+
+  getDurationString(duration: number){
+    return Math.floor(duration/60) + ':' + (duration - (Math.floor(duration/60)*60));
   }
 }

@@ -1,4 +1,4 @@
-<div class="d-flex flex-column  w-25 h-100 bg-primary">
+<div class="d-flex flex-column  w-25 h-100 bg-primary" *ngIf="artist.image && album.image">
     <div class="d-flex flex-column h-50 w-100 text-light p-3" [style]="'background-image: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.9) 85%), url('+ getAlbumImageURL() + '); background-size: cover; background-position: center;'">
         <button class="btn btn-link text-decoration-none text-light text-start m-0 p-0" (click)="back()">
             <h1>
@@ -14,6 +14,47 @@
         <h1>Artista: {{ artist.name }}</h1>
     </div>
 </div>
-<div class="d-flex flex-column w-75 h-100 bg-secondary">
+<div class="w-75 h-100 p-4 bg-light">
+    <form class="d-flex flex-column h-100 w-100 p-3 rounded-3 shadow bg-white" *ngIf="!newSong._id" #newSongForm="ngForm" (submit)="newSongForm.valid && onSubmit()">
+        <h1>Nueva canción</h1>            
+            <label class="form-label mt-3" for="songName">Titulo: </label>
+            <input class="form-control" type="text" name="songName" id="songName" #songName="ngModel" [(ngModel)]="newSong.name" required>
+            <span class="w-100 text-danger fs-6" *ngIf="!songName.valid">Ingrese el nombre de la nueva canción</span>
+            <br>
 
+            <label class="form-label mt-3" for="songFile">Archivo: </label>
+            <input #songFile="ngModel" class="form-control" type="file" accept="audio/mpeg" name="songFile" id="songFile" (change)="onFileChanged($event)" [(ngModel)] = "fakeFilePath" required>
+            <span class="w-100 text-danger fs-6" *ngIf="!songFile.valid">Seleccione un archivo de audio para la nueva cancion</span>
+            <br>
+
+            <div class="d-flex flex-column justify-content-center align-items-center mt-auto w-100" *ngIf="file">
+                <div class="alert alert-info w-100 mt-3" role="alert">
+                    <span>Archivo elegido: {{ file }}</span>
+                    <br>
+                    <span>Duración: {{ durationString }}</span>
+                </div>
+                <button class="btn btn-danger mt-3" (click)="cancelFile()">Cancelar</button>
+            </div>
+
+            <div class="alert alert-warning w-100 mt-auto" role="alert">
+                El N° de orden de la nueva canción será inferido a partir del orden de subida de la misma.
+            </div>
+            
+            <button type="submit" [class.disabled]="!newSongForm.valid" class="btn btn-primary mt-1 w-100">Guardar</button>
+
+        <div *ngIf="errorText" class="alert alert-danger w-100 mt-3" role="alert">
+            {{ errorText }}
+        </div>
+    </form>
+    <div class="d-flex flex-column justify-content-center align-items-center h-100 w-100 p-3 rounded-3 shadow bg-white" *ngIf="newSong._id" >
+        <h1>¡Nueva canción agregada correctamente!</h1>
+        <div class="alert alert-success w-50 mt-3" role="alert">
+            <span>Orden: {{ newSong.number }}</span>
+            <br>
+            <span>Nombre: {{ newSong.name }}</span>
+            <br>
+            <span>Duración: {{ durationString }}</span>
+        </div>
+        <button class="btn btn-outline-success w-50" (click)="back()">Aceptar</button>
+    </div>
 </div>

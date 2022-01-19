@@ -1,0 +1,6 @@
+.coverimage {
+    background-image: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.8) 90%), url(/assets/albumLogo.jpg);
+    background-size: cover;
+    background-position: center;
+}
+

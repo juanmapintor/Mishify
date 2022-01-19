@@ -1,62 +1,72 @@
-<div class="h-100 w-100 d-flex flex-column p-3">
+<div class="d-flex flex-column p-3 w-25 h-100 overflow-hidden text-light coverimage">
+    <button class="btn btn-link text-decoration-none text-light text-start m-0 p-0" (click)="back()">
+        <h1>
+            <i class="bi bi-chevron-double-left m-0 p-0"></i>
+        </h1>
+    </button>
     <h1>Artistas</h1>
-    <div class="d-flex w-100 h-100">
-        <button class="btn h-100 flex-grow-0" [class.hidden]="currentPage === prevPage" (click)="goToPage(prevPage)">
-            <i class="bi bi-chevron-double-left"></i>
-        </button>
-        <div class="d-flex flex-column w-100 h-100">
-            <div class="d-flex m-2 p-2 bg-dark bg-gradient rounded-3 text-light" 
-            *ngFor="let artist of artistToList; let i = index" 
-            [style]="'max-height: '+(100/itemsPerPage)+'%;'+
-                     'height: '+(100/itemsPerPage)+'%;'">
-                <div
-                class="rounded-3"
-                [style]="'aspect-ratio: 1;'+
-                         'background-image: url('+ getImageURL(artist.image) + ');' + 
-                         'background-size: cover;'+
-                         'background-position: center;'"></div>
-                <div class="d-flex flex-column justify-content-start align-content-start flex-grow-1 ps-2">
-                    <h2>{{ artist.name }}</h2>
-                    <span>{{ artist.description }}</span>
-                    <button class="btn btn-outline-info align-self-start mt-auto" [routerLink]="['/artista', artist._id]">Ver más</button>
-                </div>
-                <div style="aspect-ratio: 1;" *ngIf="isAdmin()">
-                    <div class="d-flex flex-column justify-content-center align-items-end h-100 w-100" *ngIf="!isDeleting[i]">
-                        <button class="btn btn-link text-decoration-none text-warning" [routerLink]="['/editar-artista', artist._id]">
-                            <i class="bi bi-pencil-square fs-3"></i>
-                        </button>
-                        <button class="btn btn-link text-decoration-none text-danger" (click)="delete(i)">
-                            <i class="bi bi-x-circle fs-3"></i>
-                        </button>
+</div>
+
+<div class="w-75 h-100 p-4 bg-light">
+    <div class="d-flex flex-column h-100 w-100 p-3 rounded-3 shadow bg-white">
+        <div class="d-flex w-100 h-100">
+            <button class="btn h-100 flex-grow-0" [class.hidden]="currentPage === prevPage" (click)="loadPage(prevPage)">
+                <i class="bi bi-chevron-double-left"></i>
+            </button>
+            <div class="d-flex flex-column w-100 h-100">
+                <div class="d-flex m-2 p-2 bg-dark bg-gradient rounded-3 text-light" 
+                *ngFor="let artist of artistToList; let i = index" 
+                [style]="'max-height: '+(100/itemsPerPage)+'%;'+
+                        'height: '+(100/itemsPerPage)+'%;'">
+                    <div
+                    class="rounded-3"
+                    [style]="'aspect-ratio: 1;'+
+                            'background-image: url('+ getImageURL(artist.image) + ');' + 
+                            'background-size: cover;'+
+                            'background-position: center;'"></div>
+                    <div class="d-flex flex-column justify-content-start align-content-start flex-grow-1 ps-2">
+                        <h2>{{ artist.name }}</h2>
+                        <span>{{ artist.description }}</span>
+                        <button class="btn btn-outline-info align-self-start mt-auto" [routerLink]="['/artista', artist._id]">Ver más</button>
                     </div>
-                    <div class="d-flex flex-column justify-content-center align-items-center h-100 w-100 bg-black bg-gradient rounded-3" *ngIf="isDeleting[i]">
-                        <span>¿Estas seguro?</span>
-                        <div>
-                            <button class="btn btn-link text-decoration-none text-success" (click)="deleteArtist(artist._id)">
-                                <i class="bi bi-check-circle fs-1"></i>
+                    <div style="aspect-ratio: 1;" *ngIf="isAdmin()">
+                        <div class="d-flex flex-column justify-content-center align-items-end h-100 w-100" *ngIf="!isDeleting[i]">
+                            <button class="btn btn-link text-decoration-none text-warning" [routerLink]="['/editar-artista', artist._id]">
+                                <i class="bi bi-pencil-square fs-3"></i>
                             </button>
-                            <button class="btn btn-link text-decoration-none text-danger" (click)="cancelDelete(i)">
-                                <i class="bi bi-x-circle fs-1"></i>
-                            </button>  
+                            <button class="btn btn-link text-decoration-none text-danger" (click)="delete(i)">
+                                <i class="bi bi-x-circle fs-3"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center align-items-center h-100 w-100 bg-black bg-gradient rounded-3" *ngIf="isDeleting[i]">
+                            <span>¿Estas seguro?</span>
+                            <div>
+                                <button class="btn btn-link text-decoration-none text-success" (click)="deleteArtist(artist._id)">
+                                    <i class="bi bi-check-circle fs-1"></i>
+                                </button>
+                                <button class="btn btn-link text-decoration-none text-danger" (click)="cancelDelete(i)">
+                                    <i class="bi bi-x-circle fs-1"></i>
+                                </button>  
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="d-flex justify-content-center align-items-center flex-grow-1 p-2 m-2 bg-secondary bg-gradient rounded-3 text-light" 
+                *ngIf="artistToList.length < itemsPerPage" style="opacity: 0.5;">
+                    <h1>No hay nada más que mostrar</h1>
+                </div>
+                
             </div>
-            <div class="d-flex justify-content-center align-items-center flex-grow-1 p-2 m-2 bg-secondary bg-gradient rounded-3 text-light" 
-            *ngIf="artistToList.length < itemsPerPage" style="opacity: 0.5;">
-                <h1>No hay nada más que mostrar</h1>
-            </div>
-            
+            <button class="btn h-100 flex-grow-0"  [class.hidden]="currentPage === nextPage" (click)="loadPage(nextPage)">
+                <i class="bi bi-chevron-double-right"></i>
+            </button>
         </div>
-        <button class="btn h-100 flex-grow-0"  [class.hidden]="currentPage === nextPage" (click)="goToPage(nextPage)">
-            <i class="bi bi-chevron-double-right"></i>
+        <div *ngIf="errorText" class="alert alert-danger w-100 mt-3" role="alert">
+            {{ errorText }}
+        </div>
+        <button class="btn btn-outline-success w-100 align-self-center" *ngIf="isAdmin()" routerLink="/crear-artista">
+            <i class="bi bi-plus-circle-fill w-100 h-100">  Añadir artista</i>
         </button>
     </div>
-    <div *ngIf="errorText" class="alert alert-danger w-100 mt-3" role="alert">
-        {{ errorText }}
-    </div>
-    <button class="btn btn-outline-success w-100 align-self-center" *ngIf="isAdmin()" routerLink="/crear-artista">
-        <i class="bi bi-plus-circle-fill w-100 h-100">  Añadir artista</i>
-    </button>
 </div>
 

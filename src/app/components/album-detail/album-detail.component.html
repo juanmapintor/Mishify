@@ -44,52 +44,57 @@
     <div class="d-flex flex-column h-100 w-100 p-3 rounded-3 shadow bg-white">
         <h1>Canciones</h1>
         <div class="flex-grow-1">
-            <!--div class="d-flex w-100 h-100">
-                <button class="btn h-100 flex-grow-0" [class.hidden]="songsToList.length == 0 || currentPage == prevPage" (click)="goToPage(prevPage)">
+            <div class="d-flex w-100 h-100">
+                <button class="btn h-100 flex-grow-0" [class.hidden]="songsToList.length == 0 || currentPage == prevPage" (click)="loadSongs(prevPage)">
                     <i class="bi bi-chevron-double-left"></i>
                 </button>
                 <div class="d-flex flex-column w-100 h-100">
-                    <div class="d-flex m-2 p-2 bg-dark bg-gradient rounded-3 text-light" 
+                    <div class="d-flex align-items-center m-1 p-3 bg-dark bg-gradient rounded-3 text-light" 
                          *ngFor="let song of songsToList; let i = index" 
                          [style]="'max-height: '+(100/itemsPerPage)+'%;'+
                                   'height: '+(100/itemsPerPage)+'%;'">
-                            <div class="d-flex flex-column justify-content-start align-content-start flex-grow-1 ps-2">
-                                <h2>{{ album.title }}</h2>
-                                <span>{{ album.description }}</span>
-                                <span class="mt-3 fs-6">{{ album.year }}</span>
-                                <button class="btn btn-outline-info align-self-start mt-auto" [routerLink]="['/album', album._id]">Ver más</button>
+                            <h4 class="d-flex justify-content-center align-items-center my-0 ms-2 me-4 p-0 h-100" style="opacity: 0.6;">{{ song.number }}</h4>
+                            <div class="d-flex flex-column justify-content-start align-content-start flex-grow-1">
+                                <h5 class="m-0 p-0">{{ song.name }}</h5>
+                                <span style="opacity: 0.8;">{{ artist.name }}</span>
+                                <span style="opacity: 0.6;">{{ album.title }}</span>
                             </div>
-                            <div style="aspect-ratio: 1;" *ngIf="isAdmin()">
-                                <div class="d-flex flex-column justify-content-center align-items-end h-100 w-100" *ngIf="!isDeletingAlbum[i]">
-                                    <button class="btn btn-link text-decoration-none text-warning" [routerLink]="['/editar-album', album._id]">
-                                        <i class="bi bi-pencil-square fs-1"></i>
+                            <div class="me-3" *ngIf="isAdmin()">
+                                <div class="d-flex justify-content-center align-items-center h-100 w-100" *ngIf="!isDeletingSong[i]">
+                                    <button class="btn btn-link text-decoration-none text-warning" [routerLink]="['/editar-cancion', song._id]">
+                                        <i class="bi bi-pencil-square"></i>
                                     </button>
-                                    <button class="btn btn-link text-decoration-none text-danger" (click)="deleteAlbum(i)">
-                                        <i class="bi bi-x-circle fs-1"></i>
+                                    <button class="btn btn-link text-decoration-none text-danger" (click)="deleteSong(i)">
+                                        <i class="bi bi-x-circle"></i>
                                     </button>
                                 </div>
-                                <div class="d-flex flex-column justify-content-center align-items-center h-100 w-100 bg-black bg-gradient rounded-3" *ngIf="isDeletingAlbum[i]">
+                                <div class="d-flex justify-content-between align-items-center h-100 w-100 bg-black bg-gradient rounded-3 p-3" *ngIf="isDeletingSong[i]">
                                     <span>¿Estas seguro?</span>
                                     <div>
-                                        <button class="btn btn-link text-decoration-none text-success" (click)="confirmDeleteAlbum(album._id)">
-                                            <i class="bi bi-check-circle fs-1"></i>
+                                        <button class="btn btn-link text-decoration-none text-success" (click)="confirmDeleteSong(song._id)">
+                                            <i class="bi bi-check-circle"></i>
                                         </button>
-                                        <button class="btn btn-link text-decoration-none text-danger" (click)="cancelDeleteAlbum(i)">
-                                            <i class="bi bi-x-circle fs-1"></i>
+                                        <button class="btn btn-link text-decoration-none text-danger" (click)="cancelDeleteSong(i)">
+                                            <i class="bi bi-x-circle"></i>
                                         </button>  
                                     </div>
                                 </div>
                             </div>
+                            <span class="me-2 fw-light">{{ getDurationString(song.duration) }}</span>
+                            <button class="btn btn-link text-decoration-none text-light ms-auto me-2 my-0 p-0">
+                                <i class="bi bi-play-circle fs-1 d-flex justify-content-center p-0 m-0"></i>
+                            </button>
+
                     </div>
                     <div class="d-flex justify-content-center align-items-center flex-grow-1 p-2 m-2 bg-secondary bg-gradient rounded-3 text-light" 
                         *ngIf="songsToList.length < itemsPerPage" style="opacity: 0.5;">
-                        <h1>No hay nada más que mostrar</h1>
+                        <h4 class="m-0 p-0">No hay nada más que mostrar</h4>
                     </div>
                 </div>
-                <button class="btn h-100 flex-grow-0"  [class.hidden]="songsToList.length == 0 || currentPage == nextPage" (click)="goToPage(nextPage)">
+                <button class="btn h-100 flex-grow-0"  [class.hidden]="songsToList.length == 0 || currentPage == nextPage" (click)="loadSongs(nextPage)">
                     <i class="bi bi-chevron-double-right"></i>
                 </button>
-            </div-->
+            </div>
         </div>
         <div *ngIf="errorText" class="alert alert-danger w-100 mt-3" role="alert">
             {{ errorText }}

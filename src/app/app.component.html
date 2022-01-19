@@ -1,9 +1,17 @@
 <div class="d-flex flex-column w-100 h-100">
   
   <div class="navbar justify-content-start align-items-center bg-dark text-light m-0 p-3 position-sticky top-0">
-    <img style="height: 50px;" class="me-3" src="assets/logo.png" alt="Logo">
-    <h1 class="m-0 p-0">{{ title }}</h1>
-    
+    <div class="d-flex justify-content-start align-items-center h-100">
+      <img style="height: 50px;" class="me-3" src="assets/logo.png" alt="Logo">
+      <h1 class="m-0 p-0">{{ title }}</h1>
+    </div>
+    <div class="d-flex justify-content-start align-items-center h-100 ms-auto">
+      <img class="rounded-circle mx-0 mt-0 mb-1 p-0" style="height: 50px;" *ngIf="imageSrc" [src]="imageSrc" alt="Imagen de perfil">
+      <div class="d-flex flex-column justify-content-center align-items-start ms-3">
+        <span>{{ user_login.name }}</span>
+        <span style="opacity: 0.6;">{{ user_login.role == 'ROLE_ADMIN' ? 'Administrador' : 'Usuario'}}</span>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="!isLoggedIn" class="d-flex flex-grow-1 w-100 bg-light m-auto">
@@ -43,7 +51,7 @@
         <input #registerPassword="ngModel" [(ngModel)]="user_register.password" type="password" name="registerPassword" id="registerPassword" class="form-control" required>
         <span class="w-100 text-danger fs-6" *ngIf="!registerPassword.valid && registerPassword.touched">Ingrese una contraseña</span>
         <br>
-        <input type="submit" value="Registrarse" [class.disabled]="!loginForm.valid"  class="btn w-100 mt-3 btn-primary">
+        <input type="submit" value="Registrarse" [class.disabled]="!registerForm.valid"  class="btn w-100 mt-3 btn-primary">
       </form>
       <div *ngIf="registerError" class="alert alert-danger w-75 mt-3" role="alert">
         {{ registerError }}
@@ -68,13 +76,11 @@
         <i class="mt-3 bi bi-star fs-1"></i>
         <span>Artistas</span>
       </a>
-      <a class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+      <a [routerLink]="['/albums']" [routerLinkActive]="'text-info'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
         <i class="mt-3 bi bi-disc fs-1"></i>
         <span>Albums</span>
       </a>
       <div class="d-flex bg-black bg-gradient flex-column align-items-center justify-content-center mt-auto border-top w-100 text-light" *ngIf="isLoggedIn">
-        <img class="rounded-circle mt-3" style="height: 60px;" *ngIf="imageSrc" [src]="imageSrc" alt="Imagen de perfil">
-        <span>{{ user_login.name }}</span>
         <a [routerLink]="'/mis-datos'" [routerLinkActive]="'text-info'"  class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
           <i class="mt-3 bi bi-gear fs-1"></i>
           <span>Mis datos</span>
@@ -85,7 +91,14 @@
         </a>
       </div>
     </div>
-    <router-outlet></router-outlet>
+    <div class="d-flex flex-column w-100 h-100">
+      <div class="w-100" style="height: 90%;">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="w-100" style="height: 10%;">
+        <app-player></app-player>
+      </div>
+    </div>
   </div>
 
 </div>

@@ -30,10 +30,10 @@ export class AlbumDetailComponent implements OnInit {
   currentPage = 1;
   nextPage = 1;
 
-  itemsPerPage = 3;
+  itemsPerPage = 8;
 
   songsToList : Array<Song> = [];
-  isDeletingAlbum : Array<boolean> = [];
+  isDeletingSong : Array<boolean> = [];
 
   constructor(private _activatedRoute: ActivatedRoute, 
     private _location: Location, 
@@ -55,7 +55,7 @@ export class AlbumDetailComponent implements OnInit {
           let album = getAlbum.album;
           this.album = new Album(album._id, album.title, album.description, album.year, album.image, album.artist._id);
           this.artist = new Artist(album.artist._id, album.artist.name, album.artist.description, album.artist.image);
-          //this.loadAlbums(this.currentPage);
+          this.loadSongs(this.currentPage);
         } else {
           this.errorText = 'No se obtuvo un album';
         }
@@ -98,4 +98,61 @@ export class AlbumDetailComponent implements OnInit {
   back(){
     this._location.back();
   }
+
+  getDurationString(duration: number){
+    let minutes = Math.floor(duration/60);
+    let seconds = (duration - (Math.floor(duration/60)*60));
+    
+    return (minutes < 10 ? '0'+ minutes : minutes) + ':' +  (seconds < 10 ? '0'+ seconds : seconds);
+  }
+
+  deleteSong(i: number){
+    this.isDeletingSong[i] = true;
+  }
+
+  async loadSongs(page: number){
+    this.currentPage = page;
+    this.nextPage = page + 1;
+    this.prevPage = page - 1;
+    this.songsToList = [];
+    this.isDeletingSong = [];
+    if(this.prevPage == 0) this.prevPage = 1;
+    try {
+      let songs : any = await this._songService.listSongs(page, this.itemsPerPage, this.album._id);
+      if(songs.songs){
+        let totalPages = Math.ceil((songs.total_items / this.itemsPerPage));
+        if(this.currentPage == totalPages) this.nextPage = this.currentPage;
+        songs.songs.map((song: any) => {
+          this.songsToList.push(new Song(song._id, song.number, song.name, song.duration, song.file, this.album._id));
+          this.isDeletingSong.push(false);
+        });
+      } else {
+        this.errorText = songs.message ? songs.message : 'Ocurrio un error, vuelva a intentarlo';
+      }
+    } catch(error: any){
+      this.errorText = error.error.message ? error.error.message : 'Ocurrio un error, vuelva a intentarlo';
+    }
+  }
+
+  async confirmDeleteSong(songId: string){
+    try {
+      let deletedSong = await this._songService.deleteSong(songId);
+      if(deletedSong){
+        if(this.songsToList.length == 1){
+          this.loadSongs(this.prevPage);
+        } else {
+          this.loadSongs(this.currentPage);
+        }
+      } else {
+        this.errorText = 'No se elimino el album.';
+      }
+    } catch(error: any){
+      this.errorText = error.error.message ? error.error.message : 'Ocurrio un error, vuelva a intentarlo';
+    }
+  }
+
+  cancelDeleteSong(i: number){
+    this.isDeletingSong[i] = false;
+  }
+
 }

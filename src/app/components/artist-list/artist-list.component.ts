@@ -6,6 +6,7 @@ import { User } from 'src/app/models/user';
 import { ArtistService } from 'src/app/services/artist.service';
 import { TokenService } from 'src/app/services/token.service';
 import { GLOBAL } from 'src/app/services/global';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { GLOBAL } from 'src/app/services/global';
 })
 export class ArtistListComponent implements OnInit {
   @HostBinding('class') defaultClasses = 'd-flex h-100 w-100';
+
   currentPage = 1;
   nextPage = 1;
   prevPage = 1;
@@ -26,22 +28,29 @@ export class ArtistListComponent implements OnInit {
   errorText = '';
 
 
-  constructor(private _router: Router, private _activatedRoute: ActivatedRoute, private _tokenService: TokenService, private _artistService: ArtistService) { }
+  constructor(private _router: Router, 
+    private _activatedRoute: ActivatedRoute, 
+    private _location: Location, 
+    private _tokenService: TokenService, 
+    private _artistService: ArtistService) { }
 
   ngOnInit() : void {
-    this.loadPage();
+    this.loadPage(this.currentPage);
     this.currentUser = this._tokenService.getUser();
   }
 
-  async loadPage(){
+  async loadPage(page: number){
     this.errorText = '';
-    let params :any = await firstValueFrom(this._activatedRoute.params);
-    if(params.page) {
-      this.currentPage = +params.page;
-      this.nextPage = this.currentPage + 1;
-      this.prevPage = this.currentPage - 1;
-      if(this.prevPage == 0) this.prevPage = 1;
-    }
+
+    this.currentPage = page;
+    this.nextPage = this.currentPage + 1;
+    this.prevPage = this.currentPage - 1;
+
+    this.artistToList = [];
+    this.isDeleting = [];
+    
+    if(this.prevPage == 0) this.prevPage = 1;
+    
 
     try{
       let artists : any = await this._artistService.listArtists(this.currentPage, this.itemsPerPage);
@@ -66,13 +75,6 @@ export class ArtistListComponent implements OnInit {
     }
   }
 
-  async goToPage(page: number){
-    //Impide que sigamos deplazandonos si estamos en la primera o en la ultima pagina
-    if(page != this.currentPage){
-      await this._router.navigate(['/artistas', page]);
-      this.loadPage();
-    }
-  }
 
   getImageURL(image: string){
     return GLOBAL.API_URL + 'get-image-artist/' + image;
@@ -82,7 +84,11 @@ export class ArtistListComponent implements OnInit {
     try {
       let deletedArtist = await this._artistService.deleteArtist(artistId);
       if(deletedArtist){
-        this.loadPage()
+        if(this.artistToList.length == 1){
+          this.loadPage(this.prevPage);
+        } else {
+          this.loadPage(this.currentPage);
+        }
       } else {
         this.errorText = 'No se elimino el artista.';
       }
@@ -101,6 +107,10 @@ export class ArtistListComponent implements OnInit {
 
   isAdmin(){
     return this.currentUser.role == 'ROLE_ADMIN';
+  }
+
+  back(){
+    this._location.back();
   }
 
 }

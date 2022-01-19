@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import {TokenService} from "./services/token.service";
 import { GLOBAL } from './services/global';
 import { Router } from '@angular/router';
+import { PlayerService } from './services/player.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 })
 
 export class AppComponent {
-  public title = 'Mishify';
+  public title = 'mishify';
   public user_login: User;
   public user_register: User;
 
@@ -81,6 +82,5 @@ export class AppComponent {
     this.imageSrc = '';
     this._router.navigate(['/']);
   }
-
   
 }
