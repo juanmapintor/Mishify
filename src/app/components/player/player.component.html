@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-start align-items-center h-100 w-100 player">
+    
+    <div class="d-flex justify-content-center flex-grow-1 h-100 p-2">
+        <div
+        class="d-flex justify-content-center align-items-center rounded-3"
+        [style]="'aspect-ratio: 1;'+
+                'background-image: url('+ getAlbumImageURL() + ');' + 
+                'background-size: cover;'+
+                'background-position: center;'">
+                <i class="d-flex justify-content-center align-items-center bg-transparent bi bi-disc m-0 p-0" style="font-size: 4rem;" *ngIf="!currentAlbum"></i>
+            </div>
+        <div class="d-flex flex-column justify-content-start align-content-start ms-2" style="width: 20%;">
+            <h5 class="m-0 p-0">{{ currentSong?.name || 'No se esta reproduciendo nada' }}</h5>
+            <span style="opacity: 0.8;">{{ currentArtist?.name  || '...' }}</span>
+            <span style="opacity: 0.6;">{{ currentAlbum?.title  || '...' }}</span>
+        </div>
+        <div class="d-flex justify-content-center align-items-center flex-grow-1">
+            <span style="opacity: 0.6;">{{ getDurationString(currentProgress) }}</span>
+            <div class="progress w-100 mx-2">
+                <div class="progress-bar bg-warning" role="progressbar" [style]="'width:'+progressPerc+'%'" ></div>
+            </div>
+            <span style="opacity: 0.6;">{{ getDurationString(this.currentSong?.duration || 0) }}</span>
+        </div>
+    </div>
+    <button class="btn btn-link text-decoration-none text-dark p-0 me-2" *ngIf="!playing" (click)="play()">
+        <i class="d-flex justify-content-center align-items-center bg-transparent bi bi-play-circle m-0 p-0" style="font-size: 4rem;" ></i>
+    </button>
+    <button class="btn btn-link text-decoration-none text-dark p-0 me-2" *ngIf="playing" (click)="pause()">
+        <i class="d-flex justify-content-center align-items-center bg-transparent bi bi-pause-circle m-0 p-0" style="font-size: 4rem;"></i>
+    </button>
+</div>
+<div class="animation">
+    <div class="wave wave1" [class.wave-paused]="!playing"></div>
+    <div class="wave wave2" [class.wave-paused]="!playing"></div>
+    <div class="wave wave3" [class.wave-paused]="!playing"></div>
+</div>
+
+
+<audio #stream class="w-75 shadow rounded-pill" *ngIf="currentSong" [src]="getAudioURL()" autoplay></audio>
+

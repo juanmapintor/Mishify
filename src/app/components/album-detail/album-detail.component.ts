@@ -10,6 +10,7 @@ import { User } from 'src/app/models/user';
 import { Song } from 'src/app/models/song';
 import { SongService } from 'src/app/services/song.service';
 import { Artist } from 'src/app/models/artist';
+import { PlayerService } from 'src/app/services/player.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class AlbumDetailComponent implements OnInit {
   currentPage = 1;
   nextPage = 1;
 
-  itemsPerPage = 8;
+  itemsPerPage = 5;
 
   songsToList : Array<Song> = [];
   isDeletingSong : Array<boolean> = [];
@@ -39,7 +40,8 @@ export class AlbumDetailComponent implements OnInit {
     private _location: Location, 
     private _tokenService: TokenService,  
     private _songService: SongService, 
-    private _albumService: AlbumService) { }
+    private _albumService: AlbumService,
+    private _playerService: PlayerService) { }
 
   ngOnInit(): void {
     this.loadAlbum();
@@ -155,4 +157,9 @@ export class AlbumDetailComponent implements OnInit {
     this.isDeletingSong[i] = false;
   }
 
+  playSong(song: Song){
+    this._playerService.setSong(song);
+    this._playerService.setAlbum(this.album);
+    this._playerService.setArtist(this.artist);
+  }
 }

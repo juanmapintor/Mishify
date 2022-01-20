@@ -64,24 +64,20 @@
 
   <div *ngIf="isLoggedIn" class="d-flex flex-grow-1 w-100 bg-light m-auto">
     <div style="width: 7%;" class="d-flex flex-column bg-dark bg-gradient align-items-center">
-      <a [routerLink]="'/home'" [routerLinkActive]="'text-info'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+      <a [routerLink]="'/home'" [routerLinkActive]="'sidebar-selected'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
         <i class="mt-3 bi bi-house fs-1"></i>
         <span>Inicio</span>
       </a>
-      <a class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
-        <i class="mt-3 bi bi-search fs-1"></i>
-        <span>Buscar</span>
-      </a>
-      <a [routerLink]="['/artistas']" [routerLinkActive]="'text-info'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+      <a [routerLink]="['/artistas']" [routerLinkActive]="'sidebar-selected'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
         <i class="mt-3 bi bi-star fs-1"></i>
         <span>Artistas</span>
       </a>
-      <a [routerLink]="['/albums']" [routerLinkActive]="'text-info'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+      <a [routerLink]="['/albums']" [routerLinkActive]="'sidebar-selected'" class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
         <i class="mt-3 bi bi-disc fs-1"></i>
         <span>Albums</span>
       </a>
       <div class="d-flex bg-black bg-gradient flex-column align-items-center justify-content-center mt-auto border-top w-100 text-light" *ngIf="isLoggedIn">
-        <a [routerLink]="'/mis-datos'" [routerLinkActive]="'text-info'"  class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
+        <a [routerLink]="'/mis-datos'" [routerLinkActive]="'sidebar-selected'"  class="text-decoration-none d-flex flex-column justify-content-center align-items-center">
           <i class="mt-3 bi bi-gear fs-1"></i>
           <span>Mis datos</span>
         </a>
